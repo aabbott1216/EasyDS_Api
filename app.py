@@ -169,7 +169,6 @@ def build_model(df):
     st.markdown('**Independent Variables**:')
     independent_variables = st.multiselect(
         "Choose the independent variables", indep_cols)
-    st.markdown('**Cross Validation**:')
     X = df[independent_variables]
     Y = df[dependent_variable]
     fig, ax = plt.subplots()
@@ -258,14 +257,16 @@ if challenge is not None:
     if challenge == "Regression":
         with st.sidebar.header('2.0 Models'):
             model = st.sidebar.multiselect("Which regression modeling strategy do you want to use?",
-                                           ("Multilinear Regression", "Support Vector Regression", "Neural Network", "Random Forest", "All of the above"))
+                                           ("Multilinear Regression", "Support Vector Regression", "Neural Network", "Random Forest"))
         if model is not None:
             with st.sidebar.header('2.1 Set Parameters'):
                 split_size = st.sidebar.slider(
                     'Data split ratio (% for Training Set)', 10, 95, 80, 5)
             with st.sidebar.header('2.2 Set Cross Validation Folds'):
-                cross_valid = st.sidebar.slider(
-                    'Number of folds', 1, 20, 10, 1)
+                # cross_valid = st.sidebar.slider(
+                #     'Number of folds', 1, 20, 10, 1)
+                cross_valid = st.sidebar.number_input('Enter Number of Folds')
+
             # Sidebar - Multilinear Regression
             if "Multilinear Regression" in model:
                 with st.sidebar.subheader('Linear Regression Learning Parameters'):
