@@ -246,7 +246,7 @@ def build_model(df):
 #---------------------------------#
 st.write("""
 # Efficient Data Science
-Deploy data science models and analysis quickly with this tool. Created by Aidan Abbott based on https://www.youtube.com/watch?v=kXvmqg8hc70&t=301s
+Deploy data science models and analysis quickly with this tool. Created by Aidan Abbott inspired by "Data Professor" on YouTube 
 """)
 st.write("""
 1. Select type of challenge
