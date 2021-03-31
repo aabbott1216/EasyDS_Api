@@ -246,8 +246,7 @@ def build_model(df):
 #---------------------------------#
 st.write("""
 # Efficient Data Science
-Deploy data science models and analysis quickly with this tool. Start by uploading a dataset, selecting the type of challenge, choose your intended models and explore. Compare several different model performances at once to find the optimal method for solving your
-problem.
+Deploy data science models and analysis quickly with this tool. Created by Aidan Abbott based on https://www.youtube.com/watch?v=kXvmqg8hc70&t=301s
 """)
 st.write("""
 1. Select type of challenge
