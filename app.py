@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 #---------------------------------#
 # Page layout
 # Page expands to full width
-st.set_page_config(page_title='Fast Data Science - Aidan Abbott',
+st.set_page_config(page_title='Efficient Data Science - Aidan Abbott',
                    layout='wide')
 
 #---------------------------------#
@@ -232,7 +232,7 @@ def build_model(df):
 
 #---------------------------------#
 st.write("""
-# Fast and Easy Data Science
+# Efficient Data Science
 Deploy data science models and analysis quickly with this tool. Start by uploading a dataset, selecting the type of challenge, choose your intended models and explore. Compare several different model performances at once to find the optimal method for solving your
 problem.
 """)
