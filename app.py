@@ -32,7 +32,7 @@ st.set_page_config(page_title='Efficient Data Science - Aidan Abbott',
 
 def plot_dependent(df, dependent_variable):
     dependent_plot = ggplot(
-        df, aes(x=range(len(df[dependent_variable])), y=df[dependent_variable])) + geom_point()
+        df, aes(df[dependent_variable]) + geom_histogram())
     st.pyplot(ggplot.draw(dependent_plot))
     return
 
