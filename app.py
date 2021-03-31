@@ -246,7 +246,9 @@ def build_model(df):
 #---------------------------------#
 st.write("""
 # Efficient Data Science
-Deploy data science models and analysis quickly with this tool. Created by Aidan Abbott inspired by "Data Professor" on YouTube 
+Deploy data science models and analysis quickly with this tool. Created by Aidan Abbott inspired by "Data Professor" on YouTube.
+Current version uses Data split ratio for training and testing.
+Currently implementing cross-fold validation, covariance/correlation plots, and Time Series analysis. 
 """)
 st.write("""
 1. Select type of challenge
