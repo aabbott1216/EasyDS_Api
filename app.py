@@ -263,10 +263,10 @@ if challenge is not None:
             with st.sidebar.header('2.1 Set Parameters'):
                 split_size = st.sidebar.slider(
                     'Data split ratio (% for Training Set)', 10, 95, 80, 5)
-            # Sidebar - Multilinear Regression
             with st.sidebar.header('2.2 Set Cross Validation Folds'):
-                cross_valid = st.slider(
+                cross_valid = st.sidebar.slider(
                     'Number of folds', 1, 20, 10, 1)
+            # Sidebar - Multilinear Regression
             if "Multilinear Regression" in model:
                 with st.sidebar.subheader('Linear Regression Learning Parameters'):
                     parameter_fit_intercept = st.sidebar.select_slider(
