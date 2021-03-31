@@ -32,7 +32,7 @@ st.set_page_config(page_title='Efficient Data Science - Aidan Abbott',
 
 def plot_dependent(df, dependent_variable):
     dependent_plot = ggplot(
-        df, aes(df[dependent_variable]) + geom_histogram())
+        df, aes(x=dependent_variable)) + geom_histogram()
     st.pyplot(ggplot.draw(dependent_plot))
     return
 
@@ -254,7 +254,7 @@ st.write("""
 2. Upload your CSV dataset
 3. Select models
 4. Set Dependent and Independent Variables
-5. Establish Parameters
+5. Set Parameters
 """)
 uploaded_file = None
 
