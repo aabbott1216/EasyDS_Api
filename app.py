@@ -173,6 +173,8 @@ def build_model(df):
     Y = df[dependent_variable]
     fig, ax = plt.subplots()
     ax.hist(Y)
+    # Make plot of dependent variable histogram
+    # Make covariance and correlation plot among selected independent variables
     # st.pyplot(fig)
 
     for col in X.columns:
@@ -233,6 +235,13 @@ st.write("""
 # Fast and Easy Data Science
 Deploy data science models and analysis quickly with this tool. Start by uploading a dataset, selecting the type of challenge, choose your intended models and explore. Compare several different model performances at once to find the optimal method for solving your
 problem.
+""")
+st.write("""
+1. Select type of challenge
+2. Upload your CSV dataset
+3. Select models
+4. Set Dependent and Independent Variables
+5. Establish Parameters
 """)
 uploaded_file = None
 
