@@ -244,7 +244,7 @@ uploaded_file = None
 with st.sidebar.header('Pre-requisites'):
     challenge = st.selectbox(
         'What type of data science challenge is this?',
-        [None, "Regression", "Classification", "Time Series Analysis", "Computer Science"])
+        [None, "Regression", "Classification", "Time Series Analysis - WIP"])
 
 if challenge is not None:
     with st.sidebar.header('1. Upload your CSV data'):
