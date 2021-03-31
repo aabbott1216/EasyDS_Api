@@ -18,12 +18,24 @@ from xgboost import XGBClassifier
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.datasets import load_diabetes, load_boston
 import matplotlib.pyplot as plt
-
+import plotnine
+from plotnine import *
 #---------------------------------#
 # Page layout
 # Page expands to full width
 st.set_page_config(page_title='Efficient Data Science - Aidan Abbott',
                    layout='wide')
+
+#---------------------------------#
+# Plotting
+
+
+def plot_dependent(df, dependent_variable):
+    dependent_plot = ggplot(
+        df, aes(x=range(len(df[dependent_variable])), y=df[dependent_variable])) + geom_point()
+    st.pyplot(ggplot.draw(dependent_plot))
+    return
+
 
 #---------------------------------#
 # Model building
@@ -162,6 +174,7 @@ def build_model(df):
     st.markdown('**Dependent Variable**:')
     dependent_variable = st.selectbox(
         "Choose the dependent variable", cols)
+    plot_dependent(df, dependent_variable)
     indep_cols = []
     for col in cols:
         if col is not dependent_variable:
