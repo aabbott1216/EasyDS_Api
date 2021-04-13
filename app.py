@@ -250,12 +250,20 @@ def build_model(df):
             randomForest(X_train, X_test, Y_train, Y_test)
 
     elif challenge == "Classification":
+        avg_accs = [0, 0]
+        avg_mses = [0, 0]
         for i in range(10):
             X_train, X_test, Y_train, Y_test = train_test_split(
                 X, Y, train_size=int(float(split_size)/100 * len(X)))
             if "Logistic Regression" in model:
                 accs, mses, params = logisticReg(
                     X_train, X_test, Y_train, Y_test)
+                avg_accs[0] += accs[0]
+                avg_accs[1] += accs[1]
+
+                avg_mses[0] += mses[0]
+                avg_mses[1] += mses[1]
+
             if "K-Means Clustering" in model:
                 acc, mse = KMeansClustering(X_train, X_test, Y_train, Y_test)
             if "K-Nearest Neighbors" in model:
@@ -270,7 +278,12 @@ def build_model(df):
                     X_train, X_test, Y_train, Y_test)
             if "XGBoost" in model:
                 acc, mse = XGBoostClassifier(X_train, X_test, Y_train, Y_test)
-        show_results(model, challenge, accs, mses, params)
+        acg_accs[0] /= 10.0
+        acg_accs[1] /= 10.0
+        acg_mses[0] /= 10.0
+        acg_mses[1] /= 10.0
+
+        show_results(model, challenge, avg_accs, avg_mses, params)
 
 
 #---------------------------------#
