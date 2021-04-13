@@ -175,7 +175,6 @@ def build_model(df):
     st.markdown('**Dependent Variable**:')
     dependent_variable = st.selectbox(
         "Choose the dependent variable", cols)
-    plot_dependent(df, dependent_variable)
     indep_cols = []
     for col in cols:
         if col is not dependent_variable:
@@ -183,6 +182,7 @@ def build_model(df):
     st.markdown('**Independent Variables**:')
     independent_variables = st.multiselect(
         "Choose the independent variables", indep_cols)
+    plot_dependent(df, dependent_variable)
     X = df[independent_variables]
     Y = df[dependent_variable]
     fig, ax = plt.subplots()
