@@ -237,7 +237,7 @@ def build_model(df):
     st.info(X_train.shape)
     st.write('Test set')
     st.info(X_test.shape)
-    folds = 1
+    folds = 10
     if challenge == "Regression":
         if "Multilinear Regression" in model:
             linearReg(X_train, X_test, Y_train, Y_test)
