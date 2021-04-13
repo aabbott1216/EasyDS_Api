@@ -185,8 +185,8 @@ def build_model(df):
     plot_dependent(df, dependent_variable)
     X = df[independent_variables]
     Y = df[dependent_variable]
-    fig, ax = plt.subplots()
-    ax.hist(Y)
+    # fig, ax = plt.subplots()
+    # ax.hist(Y)
     # Make plot of dependent variable histogram
     # Make covariance and correlation plot among selected independent variables
     # st.pyplot(fig)
