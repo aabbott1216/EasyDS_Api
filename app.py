@@ -279,10 +279,10 @@ def build_model(df):
                     X_train, X_test, Y_train, Y_test)
             if "XGBoost" in model:
                 acc, mse = XGBoostClassifier(X_train, X_test, Y_train, Y_test)
-        avg_accs[0] /= 10.0
-        avg_accs[1] /= 10.0
-        avg_mses[0] /= 10.0
-        avg_mses[1] /= 10.0
+        avg_accs[0] /= folds
+        avg_accs[1] /= folds
+        avg_mses[0] /= folds
+        avg_mses[1] /= folds
 
         show_results(model, challenge, avg_accs, avg_mses, params)
 
