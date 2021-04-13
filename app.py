@@ -259,26 +259,27 @@ def build_model(df):
             if "Logistic Regression" in model:
                 accs, mses, params = logisticReg(
                     X_train, X_test, Y_train, Y_test)
-                avg_accs[0] += accs[0]
-                avg_accs[1] += accs[1]
-
-                avg_mses[0] += mses[0]
-                avg_mses[1] += mses[1]
-
             if "K-Means Clustering" in model:
-                acc, mse = KMeansClustering(X_train, X_test, Y_train, Y_test)
+                accs, mses, params = KMeansClustering(
+                    X_train, X_test, Y_train, Y_test)
             if "K-Nearest Neighbors" in model:
-                acc, mse = KNearestNeighbors(X_train, X_test, Y_train, Y_test)
+                accs, mses, params = KNearestNeighbors(
+                    X_train, X_test, Y_train, Y_test)
             if "Support Vector Machine" in model:
-                acc, mse = SVC(X_train, X_test, Y_train, Y_test)
+                accs, mses, params = SVC(X_train, X_test, Y_train, Y_test)
             if "Neural Network" in model:
-                acc, mse = neuralNetClassifier(
+                accs, mses, params = neuralNetClassifier(
                     X_train, X_test, Y_train, Y_test)
             if "Random Forest" in model:
-                acc, mse = randomForestClassifier(
+                accs, mses, params = randomForestClassifier(
                     X_train, X_test, Y_train, Y_test)
             if "XGBoost" in model:
-                acc, mse = XGBoostClassifier(X_train, X_test, Y_train, Y_test)
+                accs, mses, params = XGBoostClassifier(
+                    X_train, X_test, Y_train, Y_test)
+            avg_accs[0] += accs[0]
+            avg_accs[1] += accs[1]
+            avg_mses[0] += mses[0]
+            avg_mses[1] += mses[1]
         avg_accs[0] /= folds
         avg_accs[1] /= folds
         avg_mses[0] /= folds
