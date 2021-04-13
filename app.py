@@ -223,7 +223,6 @@ def build_model(df):
             randomForest(X_train, X_test, Y_train, Y_test)
 
     elif challenge == "Classification":
-        model
         if "Logistic Regression" in model:
             logisticReg(X_train, X_test, Y_train, Y_test)
         if "K-Means Clustering" in model:
@@ -285,7 +284,7 @@ if challenge is not None:
             with st.sidebar.header('2.2 Set Cross Validation Folds'):
                 # cross_valid = st.sidebar.slider(
                 #     'Number of folds', 1, 20, 10, 1)
-                cross_valid = st.sidebar.number_input('Enter Number of Folds')
+                st.sidebar.info("Number of folds is 10")
 
             # Sidebar - Multilinear Regression
             if "Multilinear Regression" in model:
