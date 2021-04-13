@@ -20,6 +20,7 @@ from sklearn.datasets import load_diabetes, load_boston
 import matplotlib.pyplot as plt
 import plotnine
 from plotnine import *
+
 #---------------------------------#
 # Page layout
 # Page expands to full width
@@ -337,6 +338,10 @@ if challenge is not None:
             with st.sidebar.header('2.1 Set Parameters'):
                 split_size = st.sidebar.slider(
                     'Data split ratio (% for Training Set)', 10, 95, 80, 5)
+            with st.sidebar.header('2.2 Set Cross Validation Folds'):
+                # cross_valid = st.sidebar.slider(
+                #     'Number of folds', 1, 20, 10, 1)
+                cross_valid = st.sidebar.number_input('Enter Number of Folds')
             # Sidebar - Logistic Regression
             if "Logistic Regression" in model:
                 with st.sidebar.subheader('Logistic Regression Learning Parameters'):
