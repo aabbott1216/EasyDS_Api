@@ -237,6 +237,7 @@ def build_model(df):
     st.info(X_train.shape)
     st.write('Test set')
     st.info(X_test.shape)
+    folds = 10
     if challenge == "Regression":
         if "Multilinear Regression" in model:
             linearReg(X_train, X_test, Y_train, Y_test)
@@ -252,7 +253,7 @@ def build_model(df):
     elif challenge == "Classification":
         avg_accs = [0, 0]
         avg_mses = [0, 0]
-        for i in range(10):
+        for i in range(folds):
             X_train, X_test, Y_train, Y_test = train_test_split(
                 X, Y, train_size=int(float(split_size)/100 * len(X)))
             if "Logistic Regression" in model:
