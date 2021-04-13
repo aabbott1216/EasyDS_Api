@@ -197,13 +197,13 @@ def build_model(df):
     if type(Y[0]) is str:
         Y = pd.factorize(Y)[0]
         Y = pd.DataFrame(Y)
+    st.markdown('**Variable details**:')
     st.write(Y.head())
     st.write(X.head())
-    st.markdown('**Variable details**:')
-    st.write('X variable')
-    st.info(list(X.columns))
-    st.write('Y variable')
-    st.info(dependent_variable)
+    # st.write('X variable')
+    # st.info(list(X.columns))
+    # st.write('Y variable')
+    # st.info(dependent_variable)
 
     # Data splitting
     X_train, X_test, Y_train, Y_test = train_test_split(
