@@ -53,7 +53,7 @@ def results(X_train, Y_train, X_test, Y_test, reg, model_name):
         st.write('Accuracy:')
         st.info(metrics.accuracy_score(Y_train, Y_pred_train))
 
-    st.write('Error (MSE or MAE):')
+    st.write('MSE')
     st.info(mean_squared_error(Y_train, Y_pred_train))
 
     st.markdown('**2.2. Test set**')
