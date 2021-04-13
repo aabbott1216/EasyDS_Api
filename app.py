@@ -334,8 +334,9 @@ if challenge is not None:
             with st.sidebar.header('2.1 Set Parameters'):
                 split_size = st.sidebar.slider(
                     'Data split ratio (% for Training Set)', 10, 95, 80, 5)
-                cross_valid = st.sidebar.slider(
-                    'Number of folds', 1, 20, 10, 1)
+                # cross_valid = st.sidebar.slider(
+                #     'Number of folds', 1, 20, 10, 1)
+                st.sidebar.info("Number of folds is 10")
                 # cross_valid = st.sidebar.number_input('Enter Number of Folds')
             # Sidebar - Logistic Regression
             if "Logistic Regression" in model:
