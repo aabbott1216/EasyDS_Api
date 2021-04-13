@@ -41,35 +41,68 @@ def plot_dependent(df, dependent_variable):
 #---------------------------------#
 # Model building
 
-
-def results(X_train, Y_train, X_test, Y_test, reg, model_name):
+def show_results(model_name, challenge, accs, mses, params):
     st.header(model_name)
     st.markdown('**2.1. Training set**')
-    Y_pred_train = reg.predict(X_train)
     if challenge == "Regression":
         st.write('Coefficient of determination ($R^2$):')
-        st.info(r2_score(Y_train, Y_pred_train))
+        st.info(accs[0])
     elif challenge == "Classification":
         st.write('Accuracy:')
-        st.info(metrics.accuracy_score(Y_train, Y_pred_train))
-
+        st.info(accs[0])
     st.write('MSE')
-    st.info(mean_squared_error(Y_train, Y_pred_train))
+    st.info(mses[0])
 
     st.markdown('**2.2. Test set**')
-    Y_pred_test = reg.predict(X_test)
     if challenge == "Regression":
         st.write('Coefficient of determination ($R^2$):')
-        st.info(r2_score(Y_test, Y_pred_test))
+        st.info(accs[1])
     elif challenge == "Classification":
         st.write('Accuracy:')
-        st.info(metrics.accuracy_score(Y_test, Y_pred_test))
-
-    st.write('Error (MSE or MAE):')
-    st.info(mean_squared_error(Y_test, Y_pred_test))
+        st.info(accs[1])
+    st.write('MSE')
+    st.info(mses[1])
 
     st.subheader('3. Model Parameters')
-    st.write(reg.get_params())
+    st.write(params)
+
+
+def results(X_train, Y_train, X_test, Y_test, reg, model_name):
+    # st.header(model_name)
+    # st.markdown('**2.1. Training set**')
+    accs = [0, 0]
+    mses = [0, 0]
+    Y_pred_train = reg.predict(X_train)
+    if challenge == "Regression":
+        # st.write('Coefficient of determination ($R^2$):')
+        accs[0] = (r2_score(Y_train, Y_pred_train))
+    elif challenge == "Classification":
+        # st.write('Accuracy:')
+        accs[0] = (metrics.accuracy_score(Y_train, Y_pred_train))
+
+    # st.write('MSE')
+    # st.info(mean_squared_error(Y_train, Y_pred_train))
+    mses[0] = mean_squared_error(Y_train, Y_pred_train)
+
+    # st.markdown('**2.2. Test set**')
+    Y_pred_test = reg.predict(X_test)
+    if challenge == "Regression":
+        # st.write('Coefficient of determination ($R^2$):')
+        # st.info(r2_score(Y_test, Y_pred_test))
+        accs[1] = r2_score(Y_test, Y_pred_test)
+    elif challenge == "Classification":
+        # st.write('Accuracy:')
+        # st.info(metrics.accuracy_score(Y_test, Y_pred_test))
+        accs[1] = metrics.accuracy_score(Y_test, Y_pred_test)
+
+    # st.write('MSE')
+    # st.info(mean_squared_error(Y_test, Y_pred_test))
+    mses[1] = mean_squared_error(Y_test, Y_pred_test)
+
+    # st.subheader('3. Model Parameters')
+    # st.write(reg.get_params())
+    params = reg.get_params()
+    return accs, mses, params
     # st.subheader('4. Predict')
     # predict = []
     # for col in X_train.columns:
@@ -117,15 +150,9 @@ def randomForest(X_train, X_test, Y_train, Y_test):
 
 
 def logisticReg(X_train, X_test, Y_train, Y_test):
-    # if "Multilinear Regression" in model:
-    # with st.sidebar.subheader('2.2 Linear Regression Learning Parameters'):
-    #     parameter_fit_intercept = st.sidebar.select_slider(
-    #         'Fit intercept', options=[True, False])
-    #     parameter_normalize = st.sidebar.select_slider(
-    #         'Normalize regressors', options=[True, False])
     reg = LogisticRegression(C=parameter_C, random_state=1)
     reg = reg.fit(X_train, Y_train)
-    results(X_train, Y_train, X_test, Y_test, reg, "Logistic Regression")
+    return results(X_train, Y_train, X_test, Y_test, reg, "Logistic Regression")
 
 
 def KMeansClustering(X_train, X_test, Y_train, Y_test):
@@ -223,20 +250,27 @@ def build_model(df):
             randomForest(X_train, X_test, Y_train, Y_test)
 
     elif challenge == "Classification":
-        if "Logistic Regression" in model:
-            logisticReg(X_train, X_test, Y_train, Y_test)
-        if "K-Means Clustering" in model:
-            KMeansClustering(X_train, X_test, Y_train, Y_test)
-        if "K-Nearest Neighbors" in model:
-            KNearestNeighbors(X_train, X_test, Y_train, Y_test)
-        if "Support Vector Machine" in model:
-            SVC(X_train, X_test, Y_train, Y_test)
-        if "Neural Network" in model:
-            neuralNetClassifier(X_train, X_test, Y_train, Y_test)
-        if "Random Forest" in model:
-            randomForestClassifier(X_train, X_test, Y_train, Y_test)
-        if "XGBoost" in model:
-            XGBoostClassifier(X_train, X_test, Y_train, Y_test)
+        for i in range(10):
+            X_train, X_test, Y_train, Y_test = train_test_split(
+                X, Y, train_size=int(float(split_size)/100 * len(X)))
+            if "Logistic Regression" in model:
+                acc, mse, params = logisticReg(
+                    X_train, X_test, Y_train, Y_test)
+            if "K-Means Clustering" in model:
+                acc, mse = KMeansClustering(X_train, X_test, Y_train, Y_test)
+            if "K-Nearest Neighbors" in model:
+                acc, mse = KNearestNeighbors(X_train, X_test, Y_train, Y_test)
+            if "Support Vector Machine" in model:
+                acc, mse = SVC(X_train, X_test, Y_train, Y_test)
+            if "Neural Network" in model:
+                acc, mse = neuralNetClassifier(
+                    X_train, X_test, Y_train, Y_test)
+            if "Random Forest" in model:
+                acc, mse = randomForestClassifier(
+                    X_train, X_test, Y_train, Y_test)
+            if "XGBoost" in model:
+                acc, mse = XGBoostClassifier(X_train, X_test, Y_train, Y_test)
+        show_results(model, challenge, accs, mses, params)
 
 
 #---------------------------------#
