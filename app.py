@@ -158,41 +158,41 @@ def logisticReg(X_train, X_test, Y_train, Y_test):
 def KMeansClustering(X_train, X_test, Y_train, Y_test):
     reg = KMeans(n_clusters=parameter_n_clusters_kmean, random_state=1)
     reg = reg.fit(X_train, Y_train)
-    results(X_train, Y_train, X_test, Y_test, reg, "K-Means Clustering")
+    return results(X_train, Y_train, X_test, Y_test, reg, "K-Means Clustering")
 
 
 def KNearestNeighbors(X_train, X_test, Y_train, Y_test):
     reg = KNeighborsClassifier(
         n_neighbors=parameter_n_neighbors, weights=parameter_weights)
     reg = reg.fit(X_train, Y_train)
-    results(X_train, Y_train, X_test, Y_test, reg, "K-Nearest Neighbors")
+    return results(X_train, Y_train, X_test, Y_test, reg, "K-Nearest Neighbors")
 
 
 def SVC(X_train, X_test, Y_train, Y_test):
     reg = svm.SVC(C=parameter_c_svmc, kernel=parameter_kernel, random_state=1)
     reg = reg.fit(X_train, Y_train)
-    results(X_train, Y_train, X_test, Y_test,
-            reg, "Support Vector Classification")
+    return results(X_train, Y_train, X_test, Y_test,
+                   reg, "Support Vector Classification")
 
 
 def neuralNetClassifier(X_train, X_test, Y_train, Y_test):
     reg = MLPClassifier(hidden_layer_sizes=parameter_hidden_layer_sizes_classifier, activation=parameter_activation_classifier,
                         solver=parameter_solver_classifier, alpha=parameter_alpha_classifier, learning_rate=parameter_learning_rate_classifier, random_state=1)
     reg = reg.fit(X_train, Y_train)
-    results(X_train, Y_train, X_test, Y_test, reg, "Neural Network")
+    return results(X_train, Y_train, X_test, Y_test, reg, "Neural Network")
 
 
 def randomForestClassifier(X_train, X_test, Y_train, Y_test):
     reg = RandomForestClassifier(
         n_estimators=parameter_n_estimators_classifier, random_state=1)
     reg = reg.fit(X_train, Y_train)
-    results(X_train, Y_train, X_test, Y_test, reg, "Random Forest")
+    return results(X_train, Y_train, X_test, Y_test, reg, "Random Forest")
 
 
 def XGBoostClassifier(X_train, X_test, Y_train, Y_test):
     reg = XGBClassifier()
     reg = reg.fit(X_train, Y_train)
-    results(X_train, Y_train, X_test, Y_test, reg, "XGBoost")
+    return results(X_train, Y_train, X_test, Y_test, reg, "XGBoost")
 
  # Building Model
 
