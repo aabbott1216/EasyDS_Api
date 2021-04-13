@@ -273,9 +273,9 @@ if challenge is not None:
     with st.sidebar.header('1. Upload your CSV data'):
         uploaded_file = st.sidebar.file_uploader(
             "Upload your input CSV file", type=["csv"])
-        st.sidebar.markdown("""
-    [Example CSV input file](https://raw.githubusercontent.com/dataprofessor/data/master/delaney_solubility_with_descriptors.csv)
-    """)
+    #     st.sidebar.markdown("""
+    # [Example CSV input file](https://raw.githubusercontent.com/dataprofessor/data/master/delaney_solubility_with_descriptors.csv)
+    # """)
 
     # Sidebar - Regression
     if challenge == "Regression":
