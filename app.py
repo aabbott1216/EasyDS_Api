@@ -254,7 +254,7 @@ def build_model(df):
             X_train, X_test, Y_train, Y_test = train_test_split(
                 X, Y, train_size=int(float(split_size)/100 * len(X)))
             if "Logistic Regression" in model:
-                acc, mse, params = logisticReg(
+                accs, mses, params = logisticReg(
                     X_train, X_test, Y_train, Y_test)
             if "K-Means Clustering" in model:
                 acc, mse = KMeansClustering(X_train, X_test, Y_train, Y_test)
