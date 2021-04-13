@@ -200,10 +200,6 @@ def build_model(df):
     st.markdown('**Variable details**:')
     st.write(Y.head())
     st.write(X.head())
-    # st.write('X variable')
-    # st.info(list(X.columns))
-    # st.write('Y variable')
-    # st.info(dependent_variable)
 
     # Data splitting
     X_train, X_test, Y_train, Y_test = train_test_split(
@@ -211,7 +207,7 @@ def build_model(df):
 
     st.markdown('**Data splits**')
     st.write('Training set')
-    st.info(X_train.shape)
+    st.info(X_train.head())
     st.write('Test set')
     st.info(X_test.shape)
     if challenge == "Regression":
