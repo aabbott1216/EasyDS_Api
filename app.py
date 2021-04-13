@@ -234,7 +234,7 @@ def build_model(df):
 
     st.markdown('**Data splits**')
     st.write('Training set')
-    st.info(X_train.head())
+    st.info(X_train.shape)
     st.write('Test set')
     st.info(X_test.shape)
     if challenge == "Regression":
