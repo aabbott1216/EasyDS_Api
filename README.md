@@ -8,3 +8,5 @@ I wanted to create this project to avoid repeating code in other projects and cl
 Navigate to the site below to try it out!
 
 https://share.streamlit.io/aabbott1216/easyds_api/main/app.py
+
+Currently updating regression to work with k-fold, do not use
