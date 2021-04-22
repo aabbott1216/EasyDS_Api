@@ -10,3 +10,7 @@ Navigate to the site below to try it out!
 https://share.streamlit.io/aabbott1216/easyds_api/main/app.py
 
 Currently updating regression to work with k-fold, do not use. There are also some problems with select classification algorithms from switching to kfold cross-validation, this problem will be resolved soon. 
+
+Future additions:
+- Time Series Analysis
+- DeepFakes
