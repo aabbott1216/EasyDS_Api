@@ -13,4 +13,6 @@ Currently updating regression to work with k-fold, do not use. There are also so
 
 Future additions:
 - Time Series Analysis
+- Computer Vision
 - DeepFakes
+- 
