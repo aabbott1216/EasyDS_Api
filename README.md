@@ -15,4 +15,3 @@ Future additions:
 - Time Series Analysis
 - Computer Vision
 - DeepFakes
-- 
