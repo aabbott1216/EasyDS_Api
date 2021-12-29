@@ -197,18 +197,18 @@ def XGBoostClassifier(X_train, X_test, Y_train, Y_test):
  # Building Model
 
 
-def build_model(df):
-    cols = df.columns
-    st.markdown('**Dependent Variable**:')
-    dependent_variable = st.selectbox(
-        "Choose the dependent variable", cols)
-    indep_cols = []
-    for col in cols:
-        if col is not dependent_variable:
-            indep_cols.append(col)
-    st.markdown('**Independent Variables**:')
-    independent_variables = st.multiselect(
-        "Choose the independent variables", indep_cols)
+def build_model(df, independent_variables, dependent_variable):
+    # cols = df.columns
+    # st.markdown('**Dependent Variable**:')
+    # dependent_variable = st.selectbox(
+    #     "Choose the dependent variable", cols)
+    # indep_cols = []
+    # for col in cols:
+    #     if col is not dependent_variable:
+    #         indep_cols.append(col)
+    # st.markdown('**Independent Variables**:')
+    # independent_variables = st.multiselect(
+    #     "Choose the independent variables", indep_cols)
     plot_dependent(df, dependent_variable)
     X = df[independent_variables]
     Y = df[dependent_variable]
@@ -291,144 +291,153 @@ def build_model(df):
 #---------------------------------#
 st.write("""
 # Efficient Data Science
-Deploy data science models and analysis quickly with this tool. Created by Aidan Abbott inspired by "Data Professor" on YouTube.
+Deploy data science models and analysis quickly. Created by Aidan Abbott and inspired by "Data Professor" on YouTube.
+
 Current version uses Data split ratio for training and testing.
-Currently implementing cross-fold validation, covariance/correlation plots, and Time Series analysis. 
+
+In the near future there will be cross-fold validation and covariance/correlation plots. 
 """)
 st.write("""
-1. Select type of challenge
-2. Upload your CSV dataset
+1. Select task
+2. Upload CSV dataset
 3. Select models
 4. Set Dependent and Independent Variables
-5. Set Parameters
+5. Update Parameters
 """)
 uploaded_file = None
 
 
 #---------------------------------#
 # Sidebar - Collects user input features into dataframe
-uploaded_file = None
-with st.sidebar.header('Pre-requisites'):
-    challenge = st.selectbox(
-        'What type of data science challenge is this?',
-        [None, "Regression", "Classification", "Time Series Analysis - WIP"])
+with st.sidebar.header('Prerequistites'):
+    with st.sidebar.header('Prerequisites'):
+        challenge = st.selectbox(
+            'What is the task?',
+            [None, "Regression", "Classification", "Time Series Analysis - WIP"])
 
-if challenge is not None:
-    with st.sidebar.header('1. Upload your CSV data'):
-        uploaded_file = st.sidebar.file_uploader(
-            "Upload your input CSV file", type=["csv"])
-    #     st.sidebar.markdown("""
-    # [Example CSV input file](https://raw.githubusercontent.com/dataprofessor/data/master/delaney_solubility_with_descriptors.csv)
-    # """)
+        if challenge is not None:
+            with st.sidebar.header('Upload your CSV data'):
+                uploaded_file = st.sidebar.file_uploader(
+                    "Upload your input CSV file", type=["csv"])
+            #     st.sidebar.markdown("""
+            # [Example CSV input file](https://raw.githubusercontent.com/dataprofessor/data/master/delaney_solubility_with_descriptors.csv)
+            # """)
 
-    # Sidebar - Regression
-    if challenge == "Regression":
-        with st.sidebar.header('2.0 Models'):
-            model = st.sidebar.multiselect("Which regression modeling strategy do you want to use?",
-                                           ("Multilinear Regression", "Support Vector Regression", "Neural Network", "Random Forest"))
-        if model is not None:
-            with st.sidebar.header('2.1 Set Parameters'):
-                split_size = st.sidebar.slider(
-                    'Data split ratio (% for Training Set)', 10, 95, 80, 5)
-            with st.sidebar.header('2.2 Set Cross Validation Folds'):
-                # cross_valid = st.sidebar.slider(
-                #     'Number of folds', 1, 20, 10, 1)
-                st.sidebar.info("Number of folds is 10")
+            # Sidebar - Regression
+                if uploaded_file != None:
+                    df = pd.read_csv(uploaded_file)
+                    if challenge == "Regression":
+                        with st.sidebar.header('Independent and Dependent Variables'):
+                            i_var = st.sidebar.multiselect("Independent Variables", df.columns)
+                            d_var = st.sidebar.selectbox("Dependent Variable", df.columns)
+                            if i_var != [] and d_var != None:
+                                with st.sidebar.header('Models'):
+                                    model = st.sidebar.multiselect("Which regression modeling strategy do you want to use?",
+                                                                ("Multilinear Regression", "Support Vector Regression", "Neural Network", "Random Forest"))
+                                    print(model == [])
+                                    if model != []:
+                                        with st.sidebar.header('Set Parameters'):
+                                            split_size = st.sidebar.slider(
+                                                'Data split ratio (% for Training Set)', 10, 95, 80, 5)
+                                        with st.sidebar.header('Set Cross Validation Folds'):
+                                            cross_valid = st.sidebar.slider(
+                                                'Number of folds', 1, 10, 5, 1)
+                                            # st.sidebar.info(f"Number of folds is {cross_valid}")
 
-            # Sidebar - Multilinear Regression
-            if "Multilinear Regression" in model:
-                with st.sidebar.subheader('Linear Regression Learning Parameters'):
-                    parameter_fit_intercept = st.sidebar.select_slider(
-                        'Fit intercept', options=[True, False])
-                    parameter_normalize = st.sidebar.select_slider(
-                        'Normalize regressors', options=[True, False])
-            # Sidebar - Multilinear Regression
-            if "Support Vector Regression" in model:
-                with st.sidebar.subheader('SVR Learning Parameters'):
-                    parameter_kernel = st.sidebar.selectbox(
-                        'Select', ["linear", "poly", "rbf", "sigmoid", "precomputed"])
-                    parameter_tol = st.sidebar.slider(
-                        'Tolerance for stopping criterion', 0.001, .1, .001, .001)
-                    parameter_c = st.sidebar.slider(
-                        'Regularization parameter', .1, 1.0, .1, .1)
-            # Sidebar - Multilinear Regression
-            if "Neural Network" in model:
-                with st.sidebar.subheader('Neural Network Learning Parameters'):
-                    parameter_hidden_layer_sizes = st.sidebar.slider(
-                        'Number of Hidden Layers', 10, 500, 100, 5)
-                    parameter_activation = st.sidebar.selectbox(
-                        'Activation Layer', ["identity", "logistic", "tanh", "relu"], index=3)
-                    parameter_solver = st.sidebar.selectbox(
-                        'Weight Optimizer', ["adam", "sgd", "lbfgs"], index=0)
-                    parameter_alpha = st.sidebar.number_input('Enter alpha')
-                    parameter_learning_rate = st.sidebar.selectbox(
-                        'Learning Rate', ["constant", "invscaling", "adaptive"], index=0)
-            # Sidebar - Multilinear Regression
-            if "Random Forest" in model:
-                with st.sidebar.subheader('Random Forest Learning Parameters'):
-                    parameter_n_estimators = st.sidebar.slider(
-                        'Number of Trees', 10, 500, 100, 5)
+                                        # Sidebar - Multilinear Regression
+                                        if "Multilinear Regression" in model:
+                                            with st.sidebar.subheader('Multilinear Regression Learning Parameters'):
+                                                parameter_fit_intercept = st.sidebar.select_slider(
+                                                    'Fit intercept', options=[True, False])
+                                                parameter_normalize = st.sidebar.select_slider(
+                                                    'Normalize regressors', options=[True, False])
+                                        # Sidebar - Multilinear Regression
+                                        if "Support Vector Regression" in model:
+                                            with st.sidebar.subheader('SVR Learning Parameters'):
+                                                parameter_kernel = st.sidebar.selectbox(
+                                                    'Select', ["linear", "poly", "rbf", "sigmoid", "precomputed"])
+                                                parameter_tol = st.sidebar.slider(
+                                                    'Tolerance for stopping criterion', 0.001, .1, .001, .001)
+                                                parameter_c = st.sidebar.slider(
+                                                    'Regularization parameter', .1, 1.0, .1, .1)
+                                        # Sidebar - Multilinear Regression
+                                        if "Neural Network" in model:
+                                            with st.sidebar.subheader('Neural Network Learning Parameters'):
+                                                parameter_hidden_layer_sizes = st.sidebar.slider(
+                                                    'Number of Hidden Layers', 10, 500, 100, 5)
+                                                parameter_activation = st.sidebar.selectbox(
+                                                    'Activation Layer', ["identity", "logistic", "tanh", "relu"], index=3)
+                                                parameter_solver = st.sidebar.selectbox(
+                                                    'Weight Optimizer', ["adam", "sgd", "lbfgs"], index=0)
+                                                parameter_alpha = st.sidebar.number_input('Enter alpha')
+                                                parameter_learning_rate = st.sidebar.selectbox(
+                                                    'Learning Rate', ["constant", "invscaling", "adaptive"], index=0)
+                                        # Sidebar - Multilinear Regression
+                                        if "Random Forest" in model:
+                                            with st.sidebar.subheader('Random Forest Learning Parameters'):
+                                                parameter_n_estimators = st.sidebar.slider(
+                                                    'Number of Trees', 10, 500, 100, 5)
 
-    elif challenge == "Classification":
-        # Sidebar - Specify parameter settings
-        # with st.sidebar.header('2. Set Parameters'):
-        #     split_size = st.sidebar.slider(
-        #         'Data split ratio (% for Training Set)', 10, 90, 80, 5)
+                    elif challenge == "Classification":
+                        # Sidebar - Specify parameter settings
+                        # with st.sidebar.header('2. Set Parameters'):
+                        #     split_size = st.sidebar.slider(
+                        #         'Data split ratio (% for Training Set)', 10, 90, 80, 5)
 
-        with st.sidebar.header('2.0 Models'):
-            model = st.sidebar.multiselect("Which classificaiton modeling strategy do you want to use?",
-                                           ("Logistic Regression", "K-Means Clustering", "K-Nearest Neighbors", "Support Vector Machine", "Neural Network", "Random Forest", "XGBoost"))
-        if model is not None:
-            with st.sidebar.header('2.1 Set Parameters'):
-                split_size = st.sidebar.slider(
-                    'Data split ratio (% for Training Set)', 10, 95, 80, 5)
-                # cross_valid = st.sidebar.slider(
-                #     'Number of folds', 1, 20, 10, 1)
-                st.sidebar.info("Number of folds is 10")
-                # cross_valid = st.sidebar.number_input('Enter Number of Folds')
-            # Sidebar - Logistic Regression
-            if "Logistic Regression" in model:
-                with st.sidebar.subheader('Logistic Regression Learning Parameters'):
-                    parameter_C = st.sidebar.slider(
-                        'Regularization', 0, 10, 1, 1)
-            # Sidebar - K-Means Clustering
-            if "K-Means Clustering" in model:
-                with st.sidebar.subheader('K-Means Clustering Learning Parameters'):
-                    parameter_n_clusters_kmean = st.sidebar.slider(
-                        'Number of Clusters', 1, 40, 8, 1)
-            # Sidebar - K-Nearest Neighbors
-            if "K-Nearest Neighbors" in model:
-                with st.sidebar.subheader('K-Nearest Neighbors Learning Parameters'):
-                    parameter_n_neighbors = st.sidebar.slider(
-                        'Number of Neighbors', 1, 75, 5, 1)
-                    parameter_weights = st.sidebar.select_slider(
-                        'Weight Applied', options=["uniform", "distance"])
+                        with st.sidebar.header('2.0 Models'):
+                            model = st.sidebar.multiselect("Which classificaiton modeling strategy do you want to use?",
+                                                        ("Logistic Regression", "K-Means Clustering", "K-Nearest Neighbors", "Support Vector Machine", "Neural Network", "Random Forest", "XGBoost"))
+                        if model is not None:
+                            with st.sidebar.header('2.1 Set Parameters'):
+                                split_size = st.sidebar.slider(
+                                    'Data split ratio (% for Training Set)', 10, 95, 80, 5)
+                                # cross_valid = st.sidebar.slider(
+                                #     'Number of folds', 1, 20, 10, 1)
+                                st.sidebar.info("Number of folds is 10")
+                                # cross_valid = st.sidebar.number_input('Enter Number of Folds')
+                            # Sidebar - Logistic Regression
+                            if "Logistic Regression" in model:
+                                with st.sidebar.subheader('Logistic Regression Learning Parameters'):
+                                    parameter_C = st.sidebar.slider(
+                                        'Regularization', 0, 10, 1, 1)
+                            # Sidebar - K-Means Clustering
+                            if "K-Means Clustering" in model:
+                                with st.sidebar.subheader('K-Means Clustering Learning Parameters'):
+                                    parameter_n_clusters_kmean = st.sidebar.slider(
+                                        'Number of Clusters', 1, 40, 8, 1)
+                            # Sidebar - K-Nearest Neighbors
+                            if "K-Nearest Neighbors" in model:
+                                with st.sidebar.subheader('K-Nearest Neighbors Learning Parameters'):
+                                    parameter_n_neighbors = st.sidebar.slider(
+                                        'Number of Neighbors', 1, 75, 5, 1)
+                                    parameter_weights = st.sidebar.select_slider(
+                                        'Weight Applied', options=["uniform", "distance"])
 
-            # Sidebar - Support Vector Machine
-            if "Support Vector Machine" in model:
-                with st.sidebar.subheader('SVM Learning Parameters'):
-                    parameter_kernel = st.sidebar.selectbox(
-                        'Kernel', ["linear", "poly", "rbf", "sigmoid", "precomputed"])
-                    parameter_c_svmc = st.sidebar.slider(
-                        'Regularization Parameter', 0.0, 10.0, .1, 1.0)
-            # Sidebar - Multilinear Regression
-            if "Neural Network" in model:
-                with st.sidebar.subheader('Neural Network Learning Parameters'):
-                    parameter_hidden_layer_sizes_classifier = st.sidebar.slider(
-                        'Number of Hidden Layers', 10, 500, 100, 5)
-                    parameter_activation_classifier = st.sidebar.selectbox(
-                        'Activation Layer', ["identity", "logistic", "tanh", "relu"], index=3)
-                    parameter_solver_classifier = st.sidebar.selectbox(
-                        'Weight Optimizer', ["adam", "sgd", "lbfgs"], index=0)
-                    parameter_alpha_classifier = st.sidebar.number_input(
-                        'Enter alpha')
-                    parameter_learning_rate_classifier = st.sidebar.selectbox(
-                        'Learning Rate', ["constant", "invscaling", "adaptive"], index=0)
-            # Sidebar - Random Forest
-            if "Random Forest" in model:
-                with st.sidebar.subheader('Random Forest Learning Parameters'):
-                    parameter_n_estimators_classifier = st.sidebar.slider(
-                        'Number of Trees', 10, 500, 100, 5)
+                            # Sidebar - Support Vector Machine
+                            if "Support Vector Machine" in model:
+                                with st.sidebar.subheader('SVM Learning Parameters'):
+                                    parameter_kernel = st.sidebar.selectbox(
+                                        'Kernel', ["linear", "poly", "rbf", "sigmoid", "precomputed"])
+                                    parameter_c_svmc = st.sidebar.slider(
+                                        'Regularization Parameter', 0.0, 10.0, .1, 1.0)
+                            # Sidebar - Multilinear Regression
+                            if "Neural Network" in model:
+                                with st.sidebar.subheader('Neural Network Learning Parameters'):
+                                    parameter_hidden_layer_sizes_classifier = st.sidebar.slider(
+                                        'Number of Hidden Layers', 10, 500, 100, 5)
+                                    parameter_activation_classifier = st.sidebar.selectbox(
+                                        'Activation Layer', ["identity", "logistic", "tanh", "relu"], index=3)
+                                    parameter_solver_classifier = st.sidebar.selectbox(
+                                        'Weight Optimizer', ["adam", "sgd", "lbfgs"], index=0)
+                                    parameter_alpha_classifier = st.sidebar.number_input(
+                                        'Enter alpha')
+                                    parameter_learning_rate_classifier = st.sidebar.selectbox(
+                                        'Learning Rate', ["constant", "invscaling", "adaptive"], index=0)
+                            # Sidebar - Random Forest
+                            if "Random Forest" in model:
+                                with st.sidebar.subheader('Random Forest Learning Parameters'):
+                                    parameter_n_estimators_classifier = st.sidebar.slider(
+                                        'Number of Trees', 10, 500, 100, 5)
             # Sidebar - XGBoost
             # if "XGBoost" in model:
 #---------------------------------#
@@ -438,10 +447,9 @@ if challenge is not None:
 st.subheader('1. Dataset')
 
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file)
     st.markdown('**1.1. Glimpse of dataset**')
     st.write(df)
-    build_model(df)
+    build_model(df, i_var, d_var)
 else:
     st.info('Awaiting for CSV file to be uploaded.')
     # if st.button('Press to use Example Dataset'):
